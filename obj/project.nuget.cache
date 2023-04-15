@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kcM2AcflL34bI8/aguYYJ5gPgOfUgZthFkizzjBTgMGfIeZi0OIl1qC4n5KLeOc02UYjujoHLEg1EsfShWIrgQ==",
+  "dgSpecHash": "HA9Tivh/3tZzkKjXeII+qW3ksCrVI0aau6Ic9iZcEerhK2TNbpv6gC8S1IJgM3hKmH39pxtxw9ZotQZTQ4phGw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jkkn\\OneDrive\\Documents\\C#\\Dungeon\\Dungeon.csproj",
+  "projectFilePath": "/Users/moonstone/Documents/code/dungeon/Dungeon.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

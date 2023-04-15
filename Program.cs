@@ -1,4 +1,4 @@
-﻿RoomList map = new RoomList();
+﻿//RoomList map = new RoomList();
 Actor player;
 
 bool runGame = true;
@@ -13,19 +13,19 @@ while (runGame)
     
     if (pressedKey.KeyChar == 'n')
     {
-        MovePlayer(player.Location.N);
+        MovePlayer(player.Move(Direction.NORTH));
     }
     else if (pressedKey.KeyChar == 's')
     {
-        MovePlayer(player.Location.S);
+        MovePlayer(player.Move(Direction.SOUTH));
     }
     else if (pressedKey.KeyChar == 'w')
     {
-        MovePlayer(player.Location.W);
+        MovePlayer(player.Move(Direction.WEST));
     }
     else if (pressedKey.KeyChar == 'e')
     {
-        MovePlayer(player.Location.E);
+        MovePlayer(player.Move(Direction.EAST));
     }
 }
 
@@ -37,7 +37,7 @@ void MovePlayer(Rm newLocation)
     } 
     else
     {
-        player.Location = map[newLocation];
+        //player.Location = GlobalValues.map[newLocation];
         Console.WriteLine($"You are now in the {player.Location.Name}");
         Console.WriteLine($"It is {player.Location.Description}");
     }
@@ -60,7 +60,7 @@ Troll Room -- Forest
   Cave ------ Dungeon
 */
 
-    map.Add(
+    GlobalValues.map.Add(
         Rm.TrollRoom, 
         new Room(
             "Troll Room", 
@@ -68,10 +68,10 @@ Troll Room -- Forest
             Rm.NOEXIT,Rm.Cave,Rm.NOEXIT,Rm.NOEXIT,
             new ThingList()));
 
-    map[Rm.TrollRoom].AddThing(new Thing("carrot", "It is a very crunchy carrot"));
+    GlobalValues.map[Rm.TrollRoom].AddThing(new Thing("carrot", "It is a very crunchy carrot"));
 
 
-    map.Add(
+    GlobalValues.map.Add(
         Rm.Forest,
         new Room(
             "Forest",
@@ -79,11 +79,11 @@ Troll Room -- Forest
             Rm.NOEXIT,Rm.NOEXIT,Rm.TrollRoom,Rm.NOEXIT,
             new ThingList()));
 
-    map[Rm.Forest].AddThing(new Thing("sausage", "It is a plump pork sausage"));
-    map[Rm.Forest].AddThing(new Thing("tree", "It is a gigantic oak tree", false));
+    GlobalValues.map[Rm.Forest].AddThing(new Thing("sausage", "It is a plump pork sausage"));
+    GlobalValues.map[Rm.Forest].AddThing(new Thing("tree", "It is a gigantic oak tree", false));
 
 
-    map.Add(
+    GlobalValues.map.Add(
         Rm.Cave,
         new Room(
         "Cave",
@@ -92,7 +92,7 @@ Troll Room -- Forest
         new ThingList()));
 
 
-    map.Add(
+    GlobalValues.map.Add(
         Rm.Dungeon,
         new Room(
         "Dungeon",
@@ -101,6 +101,6 @@ Troll Room -- Forest
         new ThingList()));
 
 
-    player = new Actor("You", "The Player", map[Rm.TrollRoom],new ThingList());
+    player = new Actor("You", "The Player", GlobalValues.map[Rm.TrollRoom],new ThingList());
 }
 
