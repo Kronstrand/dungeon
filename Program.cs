@@ -5,7 +5,8 @@ bool freeTextInput = false;
 string textInput = "";
 ConsoleKeyInfo pressedKey;
 
-InitGame();
+InitVocabulary();
+InitGameObjects();
 StartGame();
 
 while (runGame)
@@ -66,8 +67,68 @@ string RunCommand(string inputString)
 
 string ParseCommand(List<string> wordList)
 {
-    return "";
-} 
+    List<WordAndType> command = new List<WordAndType>();
+    WT wordtype;
+    string errorMessage = "";
+    string s = "";
+
+    foreach(string word in wordList)
+    {
+        if (GlobalValues.vocab.ContainsKey(word))
+        {
+            wordtype = GlobalValues.vocab[word];
+            if (wordtype != WT.ARTICLE)
+            {
+                command.Add(new WordAndType(word, wordtype));
+            }
+        }
+        else
+        {
+            command.Add(new WordAndType(word, WT.ERROR));
+            errorMessage = $"Sorry, I don't understand '{word}";
+        }
+    }
+
+    if (errorMessage != "")
+    {
+        s = errorMessage;
+    }
+    else
+    {
+        s = ProcessCommand(command);
+    }
+
+    return s;
+}
+
+string ProcessCommand(List<WordAndType> command)
+{
+    string s = "";
+    if (command.Count() == 0)
+    {
+        return "You must write a command";
+    }
+    else if (command.Count() > 4)
+    {
+        return "that command is too long!";
+    }
+
+    switch (command.Count())
+    {
+        case 1:
+            s = ProcessVerb(command);
+            break;
+        case 2:
+            s = ProcessVerbNoun(command);
+            break;
+        case 3:
+            s = ProcessVerbPrepositionNoun(command);
+            break;
+        case 4:
+            s = ProcessVerbNounPrepositionNoun(command);
+            break;
+    }
+}
 
 void MovePlayer(Rm newLocation)
 {
@@ -90,7 +151,7 @@ void StartGame()
     Console.WriteLine("Enter a direction: (n)orth, (s)outh, (w)est or (e)ast.");
 }
 
-void InitGame()
+void InitGameObjects()
 {
     /*
 Troll Room -- Forest
@@ -141,3 +202,19 @@ Troll Room -- Forest
     player = new Actor("You", "The Player", GlobalValues.map[Rm.TrollRoom],new ThingList());
 }
 
+void InitVocabulary()
+{
+    GlobalValues.vocab.Add("bed", WT.NOUN);
+    GlobalValues.vocab.Add("bin", WT.NOUN);
+
+    GlobalValues.vocab.Add("take", WT.VERB);
+    GlobalValues.vocab.Add("drop", WT.VERB);
+
+    GlobalValues.vocab.Add("a", WT.ARTICLE);
+    GlobalValues.vocab.Add("an", WT.ARTICLE);
+    GlobalValues.vocab.Add("the", WT.ARTICLE);
+
+    GlobalValues.vocab.Add("in", WT.PREPOSITION);
+    GlobalValues.vocab.Add("into", WT.PREPOSITION);
+    GlobalValues.vocab.Add("at", WT.PREPOSITION);
+}
