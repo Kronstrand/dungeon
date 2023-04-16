@@ -1,7 +1,8 @@
-﻿//RoomList map = new RoomList();
-Actor player;
+﻿Actor player;
 
 bool runGame = true;
+bool freeTextInput = false;
+string textInput = "";
 ConsoleKeyInfo pressedKey;
 
 InitGame();
@@ -9,25 +10,64 @@ StartGame();
 
 while (runGame)
 {
-    pressedKey = Console.ReadKey();
-    
-    if (pressedKey.KeyChar == 'n')
+    if (freeTextInput)
     {
-        MovePlayer(player.Move(Direction.NORTH));
+        textInput = Console.ReadLine();
+        Console.WriteLine(textInput);
+        freeTextInput = false;
     }
-    else if (pressedKey.KeyChar == 's')
+    else
     {
-        MovePlayer(player.Move(Direction.SOUTH));
-    }
-    else if (pressedKey.KeyChar == 'w')
-    {
-        MovePlayer(player.Move(Direction.WEST));
-    }
-    else if (pressedKey.KeyChar == 'e')
-    {
-        MovePlayer(player.Move(Direction.EAST));
+        pressedKey = Console.ReadKey();
+        Console.WriteLine("");
+
+        if (pressedKey.KeyChar == '.')
+        {
+            freeTextInput = true;
+            Console.WriteLine("What do you want to do?");
+        }
+        else if (pressedKey.KeyChar == 'n')
+        {
+            MovePlayer(player.Move(Direction.NORTH));
+        }
+        else if (pressedKey.KeyChar == 's')
+        {
+            MovePlayer(player.Move(Direction.SOUTH));
+        }
+        else if (pressedKey.KeyChar == 'w')
+        {
+            MovePlayer(player.Move(Direction.WEST));
+        }
+        else if (pressedKey.KeyChar == 'e')
+        {
+            MovePlayer(player.Move(Direction.EAST));
+        }
     }
 }
+
+string RunCommand(string inputString)
+{
+    char[] delims = {' ', '.'};
+    List<string> stringList;
+    string s = "";
+    string lowerInputString = inputString.Trim().ToLower();
+
+    if (lowerInputString == "")
+    {
+        s = "You must enter a command";
+    }
+    else
+    {
+        stringList = new List<string>(inputString.Split(delims, StringSplitOptions.RemoveEmptyEntries));
+        s = ParseCommand(stringList);      
+    }
+    return s;
+}
+
+string ParseCommand(List<string> wordList)
+{
+    return "";
+} 
 
 void MovePlayer(Rm newLocation)
 {
@@ -37,11 +77,9 @@ void MovePlayer(Rm newLocation)
     } 
     else
     {
-        //player.Location = GlobalValues.map[newLocation];
         Console.WriteLine($"You are now in the {player.Location.Name}");
         Console.WriteLine($"It is {player.Location.Description}");
     }
-
 }
 
 void StartGame()
@@ -65,7 +103,7 @@ Troll Room -- Forest
         new Room(
             "Troll Room", 
             "a dank room that smells of troll. To the east you can see trees. To the south, you see the mouth of a cave entrance",
-            Rm.NOEXIT,Rm.Cave,Rm.NOEXIT,Rm.NOEXIT,
+            Rm.NOEXIT,Rm.Cave,Rm.NOEXIT,Rm.Forest,
             new ThingList()));
 
     GlobalValues.map[Rm.TrollRoom].AddThing(new Thing("carrot", "It is a very crunchy carrot"));
@@ -99,7 +137,6 @@ Troll Room -- Forest
         "the dungeon is dripping with fear and bad memories. To the west, you see light",
         Rm.NOEXIT,Rm.NOEXIT,Rm.Cave,Rm.NOEXIT,
         new ThingList()));
-
 
     player = new Actor("You", "The Player", GlobalValues.map[Rm.TrollRoom],new ThingList());
 }

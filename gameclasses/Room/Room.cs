@@ -37,12 +37,3 @@ public class Room : ThingHolder {
         set => _e = value;
     }
 }
-
-public enum Rm
-{
-    NOEXIT,
-    TrollRoom,
-    Forest,
-    Cave,
-    Dungeon
-}
